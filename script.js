@@ -19,6 +19,167 @@ require( ["js/qlik"], function ( qlik ) {
     var app = qlik.openApp("Replicon Dashboard.qvf",config);
     console.log(app);
 
+    // Create top three line charts
+    // Cost
+    app.visualization.create(
+        'linechart',[],
+        {
+            qHyperCubeDef: {  
+                qDimensions: [{  
+                    qDef: {  
+                        qFieldDefs: ["Month"],
+                        qSortCriterias: [{
+                            qSortByAscii: 1
+                        }] 
+                    }  
+                 }],  
+                qMeasures: [{  
+                    qDef: {  
+                        qDef: "Sum({$<_R6 = {1}, _BillHours = {1}>} [Cost/day])",  
+                        qLabel: "Cost last 6 months"   
+                     }  
+                 }],  
+                qInitialDataFetch: [{  
+                    qHeight: 12,   
+                    qWidth: 2  
+                }]
+            },
+            "dataPoint": {
+                "show": true,
+                "showLabels": false
+            },
+            /*"gridLine": {
+                "auto": true
+                "spacing": 2
+            },*/
+            "color": {
+                "auto": false,
+                // singlecolor doesn't work !
+                //"singleColor": 6,
+                "paletteColor": {
+                    "index": 10
+                }
+            },
+            "dimensionAxis": {
+                "show": "none"
+            },
+            "measureAxis": {
+                "show": "labels"
+            },
+            "title": "Cost over time"
+        }
+    ).then(function(vis){
+        vis.show("LineTop1");    
+    });
+
+    // Revenue
+    app.visualization.create(
+        'linechart',
+        [],
+        {
+            qHyperCubeDef: {  
+                qDimensions: [{  
+                    qDef: {  
+                        qFieldDefs: ["Month"],
+                        qSortCriterias: [{
+                            qSortByAscii: 1
+                        }] 
+                    }  
+                 }],  
+                qMeasures: [{  
+                    qDef: {  
+                        qDef: "Sum({$<_R6 = {1}, _BillHours = {1}>} [Charge/day])",  
+                        qLabel: "Revenue last 6 months"   
+                     }  
+                 }],  
+                qInitialDataFetch: [{  
+                    qHeight: 12,   
+                    qWidth: 2  
+                }]
+            },
+            "dataPoint": {
+                "show": true,
+                "showLabels": false
+            },
+            /*"gridLine": {
+                "auto": false,
+                "spacing": 2
+            },*/
+            "color": {
+                "auto": false,
+                // singlecolor doesn't work !
+                //"singleColor": 6,
+                "paletteColor": {
+                    "index": 6
+                }
+            },
+            "dimensionAxis": {
+                "show": "none"
+            },
+            "measureAxis": {
+                "show": "labels"
+            },
+            "title": "Revenue over time"
+        }
+    ).then(function(vis){
+        vis.show("LineTop2");    
+    });
+
+    // Profit
+    app.visualization.create(
+        'linechart',
+        [],
+        {
+            qHyperCubeDef: {  
+                qDimensions: [{  
+                    qDef: {  
+                        qFieldDefs: ["Month"],
+                        qSortCriterias: [{
+                            qSortByAscii: 1
+                        }] 
+                    }  
+                 }],  
+                qMeasures: [{  
+                    qDef: {  
+                        qDef: "Sum({$<_R6 = {1}, _BillHours = {1}>} [Charge/day] - [Cost/day])",  
+                        qLabel: "Profit last 6 months"   
+                     }  
+                 }],  
+                qInitialDataFetch: [{  
+                    qHeight: 12,   
+                    qWidth: 2  
+                }]
+            },
+
+            "dataPoint": {
+                "show": true,
+                "showLabels": false
+            },
+            /*"gridLine": {
+                "auto": false,
+                "spacing": 2
+            },*/
+            "color": {
+                "auto": false,
+                // singlecolor doesn't work !
+                //"singleColor": 6,
+                "paletteColor": {
+                    "index": 2
+                }
+            },
+            "dimensionAxis": {
+                "show": "none"
+            },
+            "measureAxis": {
+                "show": "labels"
+            },
+            "title": "Profit over time"
+        }
+    ).then(function(vis){
+        vis.show("LineTop3");    
+    });
+
+
     // Load Distribution chart
     app.getObject("DistChart","xffeC");
 
@@ -26,14 +187,14 @@ require( ["js/qlik"], function ( qlik ) {
     app.visualization.create(
         'kpi',
         // Able to modify the label/title
-        //[{"qDef" : { "qDef" : "=Sum([Total Hrs])", "qLabel" : "Total Hours" }},],
-        ["=Sum([Total Hrs])"],
+        [{"qDef" : { "qDef" : "=Sum([Total Hrs])", "qLabel" : "Total Hours" }},],
+        //["=Sum([Total Hrs])"],
         {
-            "showTitles" : false,
-            "title" : "Total Hours",
+            //"showTitles" : true,
+            //"title" : "Total Hours",
             "showMeasureTitle" : true,
-            "measureTitles" : "Hola",
-            "textAlign" : "left"
+            "textAlign" : "left",
+            "fontSize" : "S"
         }
     ).then(function(vis){
         vis.show("KPI1");
