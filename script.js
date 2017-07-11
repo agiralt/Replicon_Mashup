@@ -182,28 +182,53 @@ require( ["js/qlik"], function ( qlik ) {
     app.visualization.create(
         'barchart',[],
         {
-            "qHyperCubeDef": {  
-                "qDimensions": [{  
-                    "qDef": {  
+            "qHyperCubeDef": {
+                //new
+                "qStateName": "$",
+                //
+                "qDimensions": [{ 
+                    //new
+                    "qLibraryId": "",
+                    "qNullSuppression": false,
+                    "qIncludeElemValue": false,
+                    //
+                    "qDef": { 
+                        //new
+                        "qGrouping": "N",
+                        // 
                         "qFieldDefs": ["Consultant"],
                         "qSortCriterias": [{
-                            "qSortByNumeric": 1
-                        }],
-                        "autoSort": false
-                    },  
+                            "qSortByState": 0,
+                            "qSortByFrequency": 0,
+                            "qSortByNumeric": 1,
+                            "qSortByAscii": 0,
+                            "qSortByLoadOrder": 0,
+                            "qSortByExpression": 0,
+                            "qExpression": {
+                                "qv": ""
+                            }
+                        }]
+                    }
                 }],  
                 "qMeasures": [{  
-                    "qDef": {  
+                    "qDef": {
+                        //new
+                        "qGrouping": "N",
+                        //  
                         "qDef": "Sum({$<_R6 = {1}, _BillHours = {1}>} [Charge/day] - [Cost/day]) / Sum({$<_R6 = {1}, _BillHours = {1}>} [Charge/day])",  
-                        "qLabel": "Margin last 6 months"
+                        "qLabel": "Margin last 6 months",
+                        "qNumFormat" : {
+                            "qType" : "I",
+                            "qnDec" : 0,
+                            "qUseThou" : 0,
+                            "qFmt" : "#,##0%",
+                            "qDec" : ".",
+                            "qThou": ","
+					    },
                     },
-                    "qNumFormat" : {
-                        "qType" : "I",
-                        "qnDec" : 1,
-                        "qUseThou" : 0,
-                        "qFmt" : "#,##0%",
-                        "qDec" : "."
-					},
+                    //new
+                     "qLibraryId": "",
+                     //
                     "qSortBy": {
                         "qSortByState": 0,
                         "qSortByFrequency": 0,
@@ -214,10 +239,12 @@ require( ["js/qlik"], function ( qlik ) {
                         "qExpression": {
                             "qv": ""
                         }
-                    }
+                    },
                 }],
                 "qInterColumnSortOrder": [1,0],  
-                "qInitialDataFetch": [{  
+                "qInitialDataFetch": [{
+                    "qTop": 0,
+                    "qLeft": 0,  
                     "qHeight": 12,   
                     "qWidth": 2  
                 }]
